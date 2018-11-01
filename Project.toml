@@ -4,3 +4,6 @@ uuid = "afb654aa-dd19-11e8-3964-1dbcce9fe68c"
 version = "0.1.0"
 
 [deps]
+Plots
+DifferentialEquations
+ProgressMeter
