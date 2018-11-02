@@ -1,28 +1,36 @@
 module matmod
-    using Plots, DifferentialEquations, ProgressMeter
+using Plots, DifferentialEquations, ProgressMeter
 
-    f(u,p,t) = 1.01*u
-    u0=1/2
-    tspan = (0.0,1.0)
-    prob = ODEProblem(f,u0,tspan)
-    solution = solve(prob,Tsit5(),reltol=1e-2,abstol=1e-2)
+q0 = 1.0
+x_s = 5.0
+r=0.5
+q(u,p,x) = q0 + r*(x_s-x)
+u0=1/2
+xspan = (0.0,10.0)
+prob = ODEProblem(q,u0,xspan)
+solution = solve(prob,Tsit5(),reltol=1e-2,abstol=1e-2)
 
-    plot(sol)
+print(solution)
 
-    mutable struct Glacier
-        t
-        h
-        u
-        v
-    end
+plot(solution)
+gui()
 
-    function step!(g::Glacier)
+mutable struct Glacier
+  t
+  h
+  u
+  v
+end
 
-    end
+function step!(g::Glacier)
 
-    g = Glacier()
+end
 
-    @showprogress for i in 1:steps
-        step!(g)
-    end
+# g = Glacier()
+steps = 100
+
+@showprogress for i in 1:steps
+  # step!(nothing)
+  print("step")
+end
 end # module
