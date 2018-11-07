@@ -1,21 +1,30 @@
 
 using Plots, DifferentialEquations, ProgressMeter
 
+##Constants
 H = 10.0
+L = 100.0
 Q = 5.0
-theta = 12.0
+theta = 1.5
 m = 3.0
-μ = mu = 1.0
-ε = epsilon = 1.0
-κ = kappa = 2*mu*epsilon*H*Q*theta^(m)
-λ = lambda = - kappa/(m+2)
+mu = 1.0
+epsilon = H/L
+ kappa = 2*mu*epsilon*H*Q*theta^(m)
+lambda = kappa/(m+2)
 q0 = 1.0
 x_s = 5.0
 x_f = 10.0
-max_h = 20
+max_h = H
 r=0.5
-stat_h(x) = (1/lambda*(2*q0*x - r*(x_s*x - 0.5*x^2)))^(m+2)
+##END Constants
+
+h(x) = @. (1/lambda*(2*q0*x - r*(x_s*x - 0.5*x^2)))^(m+2)
 d_xh(x) =  ((m+2)/lambda*(2*q0*x - r*(x_s*x - 0.5*x^2)))^(m+1)*(2*q0 - r*(x_s-x))
+
+# flow field
+u(x,z,t) = @. -kappa/(m+1)*((h(x)-z)^(m+1) - h(x)^(m+1))
+C_v = 0
+v(x,z,t) = @. -kappa*(1/(m+1)*(h(x)-z)^(m+1) + h(x)^(m)*z)*d_xh(x) + C_v
 
 meshgrid(x, y) = (repeat(x, outer=length(y)), repeat(y, inner=length(x)))
 
@@ -24,20 +33,16 @@ function plot_steady_state()
     #x = range(0,x_f, length = 100)
     x, z = meshgrid(0:0.5:x_f, 0:0.5:max_h)
 
-    h = stat_h.(x)
-    plot(x, h)
-    savefig("steady_state.pdf")
+    hx = h.(x)
+    fig1 = plot(x, hx, title="Steady state height profile h(x)", xlabel="0<x<x_F", ylabel="0<z<h(x)")
+    savefig(fig1, "steady_state.pdf")
 
-
-    u(x,z,t) = @. -kappa/(m+1)*((h-z)^(m+1) - h^(m+1))
-    C_v = 0
-    v(x,z,t) = @. -kappa*(1/(m+1)*(h-z)^(m+1) + h^(m)*z)*d_xh(x) + C_v
     t = 0
     vr = v(x,z,t)
     ur = u(x,z,t)
 
-    quiver(x,z, quiver=(vr, ur))
-    savefig("steady_flow_field.pdf")
+    fig2 = quiver(x,z, quiver=(vr, ur), title="Steady state flow field (u,v)", xlabel="0<x<x_F", ylabel="0<z<h(x)")
+    savefig(fig2, "steady_flow_field.pdf")
 end
 
 # Statinary problem

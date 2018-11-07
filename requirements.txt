@@ -1,0 +1,8 @@
+fenics
+
+swig
+ply
+matplotlib
+fiat
+ufl
+dijitso
