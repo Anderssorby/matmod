@@ -18,19 +18,18 @@ dt = (t_end-t_start)/M;
 %% Initialize glacier and source q(x)
 qq = getSource(x_grid);
 h0 = initialGlacier(x_grid);
-h = zeros(M,N)
-h(1,1:N) = h0
-h(1:M,1) = h0(1)
+h = zeros(M,N);
+h(1,1:N) = h0;
+h(1:M,1) = h0(1);
 
 
 %% Upwind scheme
-m = 3 %from glen's law
+m = 3; %from glen's law
 lambda = 1; %need to check this
 
-for j=1:M %time
+for j=1:M %time *(m+2)*h(j,i)
     for i=2:N %space
-        x = x_start+dx*i;
-        h(j+1,i) = h(j,i) + qq(i)*dt+lambda*(dx/dt)*(h(j,i-1)-h(j,i));
+        h(j+1,i) = h(j,i) + qq(i)*dt + lambda*(dt/dx)*(h(j,i-1)^(m+2)-h(j,i)^(m+2));
     end
 end
 
