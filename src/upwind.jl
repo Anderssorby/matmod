@@ -6,7 +6,7 @@ upwind:
 =#
 using DifferentialEquations, Plots
 
-# du/dt + a du/dx = 0
+# du/dt + a du/dx = f(x)
 U = 0
 meshgrid(x, y) = (repeat(x, outer=length(y)), repeat(y, inner=length(x)))
 
