@@ -1,4 +1,4 @@
-function plot_q(xs, xf, q0, r)
+function [q_vec] = plot_q(xs, xf, q0, r)
 x = linspace(0, 1.1*xf);
 q_vec = zeros(1, length(x));
 for i = 1:length(x)

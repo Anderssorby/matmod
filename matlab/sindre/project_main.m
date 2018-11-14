@@ -11,13 +11,12 @@ epsilon = H/L;
 kappa = 2*epsilon*H/Q*Theta*abs(Theta)^(m-1);
 lambda = kappa/(m+2);
 
-h0 = 0;
+h0 = 0.9;
 q0 = 1;
 xf = 1; %% Toe of glacier / Length of domain
-xs = 0.2; 
-r1 = 2*(q0*xf-h0)/((xf-xs)^2); %% Finding rate r in function q(x)
-r2 = get_r(xs, xf, q0, h0);
-r = r1;
+xs = 0.4; 
+% r1 = 2*(q0*xf-h0)/((xf-xs)^2); %% Finding rate r in function q(x)
+r = get_r(xs, xf, q0, h0, lambda, m)-0.001;
 nx = 30; %% Steps in x direction
 nz = 30; %% Steps in z direction
 
@@ -55,7 +54,7 @@ end
 %%%% PLOTS %%%%
 figure(1)
 subplot(2,2,1)
-plot_q(xs, xf, q0, r)
+[qvec] = plot_q(xs, xf, q0, r);
 title('q(x)')
 
 subplot(2,2,2)
@@ -78,8 +77,8 @@ quiver(U,V)
 figure(3)
 plot_h_with_flow(U, V, nx, nz, xf, hmax, h_vec, H, L)
 
-% xt = xs + q0/r;
-% figure(4)
-% plot(x_vec, htrapes)
-% hold on
-% line([xt xt], [0 1.5])
+xt = xs + q0/r;
+figure(4)
+plot(x_vec, htrapes)
+hold on
+line([xt xt], [0 1.5])

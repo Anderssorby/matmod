@@ -17,9 +17,11 @@ xf = 1; %% Toe of glacier / Length of domain
 xs = 0.2; 
 r1 = 2*(q0*xf-h0)/((xf-xs)^2); %% Finding rate r in function q(x)
 r2 = get_r(xs, xf, q0, h0);
-r = r2;
-nx = 40; %% Steps in x direction
-nz = 40; %% Steps in z direction
+r = 3.6;
+nx = 30; %% Steps in x direction
+nz = 30; %% Steps in z direction
+
+xt = xs + q0/r;
 
 %%%% GRID NODES %%%%
 x_vec = linspace(0, xf, nx);
@@ -32,7 +34,7 @@ z_vec = linspace(0, H, nz);
 %%%% IMPORTANT FUNCTIONS %%%%
 q = @(x) q_func(x, xs, xf, q0, r);
 h = @(x) h_func(x, xs, xf, q0, h0, r, lambda, m);
-[htrapes] = h_trapes(q, x_vec, hq, xvec, h0, lambda, m0);
+[htrapes] = h_trapes(q, x_vec, xt, h0, lambda, m);
 h_der = @(x) h_der_func(x, xs, xf, q0, h0, r, lambda, m);
 
 %%%% VELOCITY MATRICES %%%%
@@ -76,4 +78,8 @@ quiver(U,V)
 figure(3)
 plot_h_with_flow(U, V, nx, nz, xf, hmax, h_vec, H, L)
 
-
+% xt = xs + q0/r;
+% figure(4)
+% plot(x_vec, htrapes)
+% hold on
+% line([xt xt], [0 1.5])
