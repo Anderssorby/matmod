@@ -9,9 +9,8 @@ q = zeros(1,N);
 if sourceChoice == 1 %Piecewise linear option
     q0 = 1;
     xs = xf/7;
-    r = -2;
-    %r = -2*q0*xf/(xf-xs)^2;
-    %slope = (q0-qend)/(xs-x_end);
+    %r = -2;
+    r = -2*q0*xf/(xf-xs)^2;
     qqq = @(x) q0 - r*(xs-x);
 
     for i=1:N
