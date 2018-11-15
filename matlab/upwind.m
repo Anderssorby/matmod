@@ -19,10 +19,10 @@ dt = (t_end-t_start)/M;
 %% Initialize glacier and source q(x)
 xf = 10;
 Q = zeros(M,N);
-startSource = getSource(x_grid,xf,2);
+startSource = getSource(x_grid,xf,1);
 Q(1,1:N) = startSource;
 
-h0 = initialGlacier(x_grid,xf,2);
+h0 = initialGlacier(x_grid,xf,1);
 h = zeros(M,N);
 h(1,1:N) = h0;
 h(1:M,1:2) = h0(1);  
@@ -55,16 +55,16 @@ if plotIndicator == 1
         subplot(3,1,2)
         plot(x_grid, Q(j,1:N));
         title('Source function q(x)');
-        axis([x_start x_end -2 2]);
+        axis([x_start x_end -2 1.1]);
         title(['source function q(x) at time  = ', num2str(j), ' of ', num2str(M)]) 
 
         subplot(3,1,3)
         plot(x_grid, h(j,1:N));
         axis([x_start x_end 0 2]);
-        title(['time = ', num2str(j), ' of ', num2str(M)]); 
+        title(['Glacier profile h(x,t) at time = ', num2str(j), ' of ', num2str(M)]); 
         
-        %filename = num2str(j);
-        %saveas(gcf,fullfile(path_name, filename), 'png');
+        filename = num2str(j);
+            saveas(gcf,fullfile(path_name, filename), 'png');
         pause(0.05);
     end %for loop
 end %plot indicator
